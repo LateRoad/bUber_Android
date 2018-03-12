@@ -2,84 +2,59 @@ package com.lateroad.buber.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lateroad.buber.R;
-import com.lateroad.buber.activity.TripsActivity;
 
 /**
  * Created by LateRoad on 12.03.2018.
  */
 
-public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripViewHolder> {
-
-    final private ItemClickListener mOnClickListener;
-
-    private int mNumberItems;
-
+public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapterViewHolder> {
     private String[] mTripsData;
 
+    public TripsAdapter() {
 
-    public interface ItemClickListener {
-        void onListItemClick(int clickedItemIndex);
     }
 
+    public class TripsAdapterViewHolder extends RecyclerView.ViewHolder {
 
-    public TripsAdapter(int numberOfItems, ItemClickListener listener) {
-        mNumberItems = numberOfItems;
-        mOnClickListener = listener;
-    }
+        public final TextView mTripTextView;
+
+        public TripsAdapterViewHolder(View view) {
+            super(view);
+            mTripTextView = (TextView) view.findViewById(R.id.tv_trip_data);
+        }
+}
 
     @Override
-    public TripViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public TripsAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForTripItem = R.layout.trip_list_item;
+        int layoutIdForListItem = R.layout.trip_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(layoutIdForTripItem, viewGroup, shouldAttachToParentImmediately);
-        return new TripViewHolder(view);
-    }
 
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        return new TripsAdapterViewHolder(view);
+    }
 
     @Override
-    public void onBindViewHolder(TripViewHolder holder, int position) {
-        String date = mTripsData[position];
-        holder.tripItemDataView.setText(date);
+    public void onBindViewHolder(TripsAdapterViewHolder tripsAdapterViewHolder, int position) {
+        String weatherForThisDay = mTripsData[position];
+        tripsAdapterViewHolder.mTripTextView.setText(weatherForThisDay);
     }
-
-    public void setTripsDataData(String[] tripsData) {
-        mTripsData = tripsData;
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public int getItemCount() {
-        return mNumberItems;
+        if (null == mTripsData) return 0;
+        return mTripsData.length;
     }
 
-
-    class TripViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
-
-        TextView tripItemDataView;
-
-
-        public TripViewHolder(View itemView) {
-            super(itemView);
-            tripItemDataView = (TextView) itemView.findViewById(R.id.tv_trip_data);
-            itemView.setOnClickListener(this);
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
-        }
+    public void setWeatherData(String[] weatherData) {
+        mTripsData = weatherData;
+        notifyDataSetChanged();
     }
 }

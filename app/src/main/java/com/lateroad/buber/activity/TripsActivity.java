@@ -2,31 +2,29 @@ package com.lateroad.buber.activity;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lateroad.buber.R;
 import com.lateroad.buber.adapter.TripsAdapter;
+import com.lateroad.buber.utilities.JsonUtils;
 import com.lateroad.buber.utilities.NetworkUtils;
 
-import java.io.IOException;
 import java.net.URL;
 
-public class TripsActivity extends AppCompatActivity implements TripsAdapter.ItemClickListener {
+public class TripsActivity extends AppCompatActivity {
 
-    private TextView mSearchResultsTextView;
-
-    private TextView mQueryDisplayTextView;
+    private RecyclerView mRecyclerView;
+    private TripsAdapter mTripsAdapter;
 
     private TextView mErrorMessageDisplay;
 
     private ProgressBar mLoadingIndicator;
-
-    private Toast mToast;
 
 
     @Override
@@ -34,46 +32,37 @@ public class TripsActivity extends AppCompatActivity implements TripsAdapter.Ite
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips);
 
-        mSearchResultsTextView = findViewById(R.id.tv_users_search_results_json);
-        mQueryDisplayTextView = findViewById(R.id.tv_url_display);
+        mRecyclerView = findViewById(R.id.rv_trips);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
-        makeSearch();
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mTripsAdapter = new TripsAdapter();
+        mRecyclerView.setAdapter(mTripsAdapter);
+        loadTripsData();
     }
 
-    private void makeSearch() {
-        URL searchUrl = NetworkUtils.buildUrl("orders");
-        if (searchUrl != null) {
-            mQueryDisplayTextView.setText(searchUrl.toString());
-            new SearchTask().execute(searchUrl);
-        }
+
+    private void loadTripsData() {
+        new SearchTask().execute("orders");
     }
 
     private void showJsonDataView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mSearchResultsTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
-        mSearchResultsTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
 
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-
-        mToast.show();
-    }
-
-
     @SuppressLint("StaticFieldLeak")
-    private class SearchTask extends AsyncTask<URL, Void, String> {
+    private class SearchTask extends AsyncTask<String, Void, String[]> {
 
         @Override
         protected void onPreExecute() {
@@ -82,23 +71,35 @@ public class TripsActivity extends AppCompatActivity implements TripsAdapter.Ite
         }
 
         @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String searchResults = null;
-            try {
-                searchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
+        protected String[] doInBackground(String... params) {
+            if (params.length == 0) {
+                return null;
             }
-            return searchResults;
+
+            String path = params[0];
+            URL requestUrl = NetworkUtils.buildUrl(path);
+
+            try {
+                String jsonResponse = NetworkUtils
+                        .getResponseFromHttpUrl(requestUrl);
+
+                String[] simpleJsonData = JsonUtils
+                        .getSimpleStringsFromJson(TripsActivity.this, jsonResponse);
+
+                return simpleJsonData;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
-        protected void onPostExecute(String searchResults) {
+        protected void onPostExecute(String[] searchResults) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (searchResults != null && !searchResults.equals("")) {
+            if (searchResults != null) {
                 showJsonDataView();
-                mSearchResultsTextView.setText(searchResults);
+                mTripsAdapter.setWeatherData(searchResults);
             } else {
                 showErrorMessage();
             }
