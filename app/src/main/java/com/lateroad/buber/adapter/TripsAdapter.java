@@ -9,12 +9,14 @@ import android.widget.TextView;
 
 import com.lateroad.buber.R;
 
+import java.util.List;
+
 /**
  * Created by LateRoad on 12.03.2018.
  */
 
 public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapterViewHolder> {
-    private String[] mTripsData;
+    private List mTripsData;
 
     public TripsAdapter() {
 
@@ -28,7 +30,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
             super(view);
             mTripTextView = (TextView) view.findViewById(R.id.tv_trip_data);
         }
-}
+    }
 
     @Override
     public TripsAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -43,18 +45,18 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
 
     @Override
     public void onBindViewHolder(TripsAdapterViewHolder tripsAdapterViewHolder, int position) {
-        String weatherForThisDay = mTripsData[position];
+        String weatherForThisDay = mTripsData.get(position).toString();
         tripsAdapterViewHolder.mTripTextView.setText(weatherForThisDay);
     }
 
     @Override
     public int getItemCount() {
         if (null == mTripsData) return 0;
-        return mTripsData.length;
+        return mTripsData.size();
     }
 
-    public void setWeatherData(String[] weatherData) {
-        mTripsData = weatherData;
+    public void setData(List orders) {
+        mTripsData = orders;
         notifyDataSetChanged();
     }
 }

@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.lateroad.buber.R;
 import com.lateroad.buber.adapter.TripsAdapter;
+import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.utilities.JsonUtils;
 import com.lateroad.buber.utilities.NetworkUtils;
 
 import java.net.URL;
+import java.util.List;
 
 public class TripsActivity extends AppCompatActivity {
 
@@ -62,7 +64,7 @@ public class TripsActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    private class SearchTask extends AsyncTask<String, Void, String[]> {
+    private class SearchTask extends AsyncTask<String, Void, List> {
 
         @Override
         protected void onPreExecute() {
@@ -71,22 +73,21 @@ public class TripsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected List<Order> doInBackground(String... params) {
             if (params.length == 0) {
                 return null;
             }
 
             String path = params[0];
             URL requestUrl = NetworkUtils.buildUrl(path);
-
+            JsonUtils<Order> jsonUtils = new JsonUtils<>();
             try {
                 String jsonResponse = NetworkUtils
                         .getResponseFromHttpUrl(requestUrl);
 
-                String[] simpleJsonData = JsonUtils
-                        .getSimpleStringsFromJson(TripsActivity.this, jsonResponse);
 
-                return simpleJsonData;
+                return jsonUtils
+                        .getEntityFromJson(jsonResponse, Order.class);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -95,11 +96,11 @@ public class TripsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String[] searchResults) {
+        protected void onPostExecute(List orders) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (searchResults != null) {
+            if (orders != null) {
                 showJsonDataView();
-                mTripsAdapter.setWeatherData(searchResults);
+                mTripsAdapter.setData(orders);
             } else {
                 showErrorMessage();
             }

@@ -1,59 +1,29 @@
 package com.lateroad.buber.utilities;
 
-import android.content.ContentValues;
-import android.content.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lateroad.buber.entity.Entity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public final class JsonUtils {
+public final class JsonUtils<T extends Entity> {
 
-    public static String[] getSimpleStringsFromJson(Context context, String jsonStr)
-            throws JSONException {
-        System.out.println(jsonStr);
-        final String CLIENT_LOGIN = "clientLogin";
-        final String DRIVER_LOGIN = "driverLogin";
-
-        final String MONEY = "money";
-
-        final String STATUS = "status";
-        final String DATE = "date";
-
-        final String ORIGIN = "origin";
-        final String DESTINATION = "destination";
-
-        String[] parsedData = null;
+    public List<T> getEntityFromJson(String jsonStr, Class<T> clazz) throws IOException, JSONException {
+        List<T> parsedData;
+        ObjectMapper mapper = new ObjectMapper();
 
         JSONArray jsonArray = new JSONArray(jsonStr);
-
-        parsedData = new String[jsonArray.length()];
-
+        parsedData = new ArrayList<>(jsonArray.length());
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            String date;
-            String money;
-            String clientLogin;
-            String driverLogin;
-            String origin;
-            String destination;
-
-            JSONObject trip = jsonArray.getJSONObject(i);
-
-
-            date = trip.getString(DATE);
-            money = trip.getString(MONEY);
-            clientLogin = trip.getString(CLIENT_LOGIN);
-            driverLogin = trip.getString(DRIVER_LOGIN);
-
-            parsedData[i] = date + " - " + money + " - " + clientLogin + " - " + driverLogin;
+            String jsonForMap = jsonArray.getJSONObject(i).toString();
+            parsedData.add(mapper.readValue(jsonForMap, clazz));
         }
-
         return parsedData;
-    }
-
-    public static ContentValues[] getFullDataFromJson(Context context, String jsonStr) {
-        return null;
     }
 }
