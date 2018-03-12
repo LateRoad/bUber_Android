@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lateroad.buber.R;
+import com.lateroad.buber.entity.Order;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 
 public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapterViewHolder> {
-    private List mTripsData;
+    private List<Order> mTripsData;
 
     public TripsAdapter() {
 
@@ -25,10 +26,12 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
     public class TripsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView mTripTextView;
+        public final TextView mTripDriverView;
 
         public TripsAdapterViewHolder(View view) {
             super(view);
             mTripTextView = (TextView) view.findViewById(R.id.tv_trip_data);
+            mTripDriverView = (TextView) view.findViewById(R.id.tv_driver_login);
         }
     }
 
@@ -45,8 +48,9 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
 
     @Override
     public void onBindViewHolder(TripsAdapterViewHolder tripsAdapterViewHolder, int position) {
-        String weatherForThisDay = mTripsData.get(position).toString();
-        tripsAdapterViewHolder.mTripTextView.setText(weatherForThisDay);
+        Order trip = mTripsData.get(position);
+        tripsAdapterViewHolder.mTripTextView.setText(trip.toString());
+        tripsAdapterViewHolder.mTripDriverView.setText(trip.getDriverLogin());
     }
 
     @Override
