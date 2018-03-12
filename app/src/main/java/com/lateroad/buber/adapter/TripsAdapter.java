@@ -25,13 +25,15 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
 
     public class TripsAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView mTripTextView;
+        public final TextView mTripDateTextView;
         public final TextView mTripDriverView;
+        public final TextView mTripMoneyView;
 
         public TripsAdapterViewHolder(View view) {
             super(view);
-            mTripTextView = (TextView) view.findViewById(R.id.tv_trip_data);
-            mTripDriverView = (TextView) view.findViewById(R.id.tv_driver_login);
+            mTripDateTextView = (TextView) view.findViewById(R.id.tv_trip_date);
+            mTripDriverView = (TextView) view.findViewById(R.id.tv_trip_driver_login);
+            mTripMoneyView = (TextView) view.findViewById(R.id.tv_trip_money);
         }
     }
 
@@ -49,8 +51,9 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
     @Override
     public void onBindViewHolder(TripsAdapterViewHolder tripsAdapterViewHolder, int position) {
         Order trip = mTripsData.get(position);
-        tripsAdapterViewHolder.mTripTextView.setText(trip.toString());
+        tripsAdapterViewHolder.mTripDateTextView.setText(trip.getDate().toString());
         tripsAdapterViewHolder.mTripDriverView.setText(trip.getDriverLogin());
+        tripsAdapterViewHolder.mTripMoneyView.setText("BYN" + trip.getMoney());
     }
 
     @Override

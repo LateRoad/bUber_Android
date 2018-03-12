@@ -3,38 +3,60 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_marginBottom="16dp">
+
+    <TextView
+        android:id="@+id/tv_empty_list_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/not_orders_yet"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <ImageView
-            android:id="@+id/thumbnail"
+            android:id="@+id/iv_trip_screenshot"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
+            android:contentDescription="@string/route_screenshot"
             android:scaleType="centerCrop"
             android:src="@drawable/map" />
 
         <TextView
-            android:id="@+id/tv_driver_login"
+            android:id="@+id/tv_trip_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/thumbnail"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/iv_trip_screenshot"
             android:maxLines="3"
             android:padding="8dp"
+            android:text="@string/sample_date"
             android:textColor="#222"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_trip_data"
+            android:id="@+id/tv_trip_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_driver_login"
-            android:maxLines="3"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/iv_trip_screenshot"
             android:padding="8dp"
+            android:text="@string/sample_money"
+            android:textColor="#222"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_trip_driver_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_trip_date"
+            android:padding="8dp"
+            android:text="@string/sample_driver_login"
             android:textColor="#666"
             android:textSize="14sp" />
 

@@ -11,6 +11,15 @@
     <string name="payments">Payments</string>
     <string name="other">Other</string>
     <string name="about_us">About Us</string>
-    <string name="login">Login</string>
-    <string name="mobile_number">Mobile number</string>
+    <string name="sample_login">LateRoad</string>
+    <string name="sample_mobile_number">+375(29)969–29–04</string>
+    <string name="not_orders_yet">There is no orders yet.</string>
+    <string name="sample_driver_login">Galadopter</string>
+    <string name="sample_money">BYN 3</string>
+    <string name="route_screenshot">Route screenshot</string>
+    <string name="sample_date">31/01/1998</string>
+    <string name="your_trips">Your Trips</string>
+    <string name="payment">Payment</string>
+    <string name="home">Home</string>
+    <string name="payment_methods">Payment Methods</string>
 </resources>
