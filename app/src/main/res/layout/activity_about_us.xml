@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.lateroad.buber.activity.HomeActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="com.lateroad.buber.activity.AboutUsActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/home" />
+        android:text="About Us" />
 
 </LinearLayout>

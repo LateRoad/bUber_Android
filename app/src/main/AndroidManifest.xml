@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.TripsActivity" />
-        <activity android:name=".activity.PaymentActivity"></activity>
+        <activity android:name=".activity.PaymentActivity" />
+        <activity android:name=".activity.AboutUsActivity" />
+        <activity android:name=".activity.AddCreditCardActivity"></activity>
     </application>
 
 </manifest>

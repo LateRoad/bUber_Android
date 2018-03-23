@@ -19,24 +19,23 @@ import com.lateroad.buber.utilities.NetworkUtils;
 import java.net.URL;
 import java.util.List;
 
-public class TripsActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private RecyclerView mRecyclerView;
+public class TripsActivity extends Activity {
+
+    @BindView(R.id.rv_trips) RecyclerView mRecyclerView;
+    @BindView(R.id.tv_error_message_display) TextView mErrorMessageDisplay;
+    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
+
     private TripsAdapter mTripsAdapter;
-
-    private TextView mErrorMessageDisplay;
-
-    private ProgressBar mLoadingIndicator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips);
-
-        mRecyclerView = findViewById(R.id.rv_trips);
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -62,8 +61,7 @@ public class TripsActivity extends AppCompatActivity {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-
-    @SuppressLint("StaticFieldLeak")
+    // TODO: Replace AsyncTask with something better.
     private class SearchTask extends AsyncTask<String, Void, List> {
 
         @Override

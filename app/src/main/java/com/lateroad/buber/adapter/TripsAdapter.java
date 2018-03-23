@@ -12,6 +12,9 @@ import com.lateroad.buber.entity.Order;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by LateRoad on 12.03.2018.
  */
@@ -25,15 +28,13 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
 
     public class TripsAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView mTripDateTextView;
-        public final TextView mTripDriverView;
-        public final TextView mTripMoneyView;
+        private final TextView mTripTextView;
+        private final TextView mTripDriverView;
 
         public TripsAdapterViewHolder(View view) {
             super(view);
-            mTripDateTextView = (TextView) view.findViewById(R.id.tv_trip_date);
-            mTripDriverView = (TextView) view.findViewById(R.id.tv_trip_driver_login);
-            mTripMoneyView = (TextView) view.findViewById(R.id.tv_trip_money);
+            mTripTextView = (TextView) view.findViewById(R.id.tv_trip_data);
+            mTripDriverView = (TextView) view.findViewById(R.id.tv_driver_login);
         }
     }
 
@@ -51,9 +52,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsAdapter
     @Override
     public void onBindViewHolder(TripsAdapterViewHolder tripsAdapterViewHolder, int position) {
         Order trip = mTripsData.get(position);
-        tripsAdapterViewHolder.mTripDateTextView.setText(trip.getDate().toString());
+        tripsAdapterViewHolder.mTripTextView.setText(trip.toString());
         tripsAdapterViewHolder.mTripDriverView.setText(trip.getDriverLogin());
-        tripsAdapterViewHolder.mTripMoneyView.setText("BYN" + trip.getMoney());
     }
 
     @Override

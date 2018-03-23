@@ -1,34 +1,41 @@
 package com.lateroad.buber.activity;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lateroad.buber.R;
 import com.lateroad.buber.entity.Card;
-import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.utilities.JsonUtils;
 import com.lateroad.buber.utilities.NetworkUtils;
 
 import java.net.URL;
 import java.util.List;
 
-public class PaymentActivity extends AppCompatActivity {
-    private TextView mCardsListTextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class PaymentActivity extends Activity {
+
+    @BindView(R.id.tv_card_number) TextView mCardsListTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        setTitle("PaymentActivity");
+        ButterKnife.bind(this);
 
-        mCardsListTextView = (TextView) findViewById(R.id.tv_card_number);
         new PaymentActivity.SearchTask().execute("cards");
     }
 
-    @SuppressLint("StaticFieldLeak")
+    // TODO: Add payment method.
+    public void addPayment(View view) {
+    }
+
+    // TODO: Replace AsynkTask with something better.
     private class SearchTask extends AsyncTask<String, Void, List<Card>> {
 
         @Override
@@ -63,10 +70,13 @@ public class PaymentActivity extends AppCompatActivity {
         protected void onPostExecute(List<Card> cards) {
             if (cards != null) {
                 for (Card card : cards) {
-                    mCardsListTextView.append(card.getHashNumber() + "\n\n\n");
+                    mCardsListTextView.append("**** " + card.getLastDigits() + "\n\n\n");
                 }
-            } else {
+            }
+            //TODO: Add card == null scenario.
+            else {
             }
         }
+
     }
 }

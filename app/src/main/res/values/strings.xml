@@ -20,6 +20,8 @@
     <string name="sample_date">31/01/1998</string>
     <string name="your_trips">Your Trips</string>
     <string name="payment">Payment</string>
-    <string name="home">Home</string>
     <string name="payment_methods">Payment Methods</string>
+    <string name="add_payment">Add payment</string>
+    <string name="card_number">Card Number</string>
+    <string name="home">Home</string>
 </resources>
